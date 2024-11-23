@@ -7,21 +7,51 @@ using namespace std;
 //   bonus! try to implement your function so that it can accept
 //     many types of data (int, char, string, etc.)
 template <typename flexibleType> // ???
-void printArray(...) {}
+void printArray(flexibleType x[], int size) 
+{
+    for(int i = 0; i < size; i++)
+    {
+        cout << x[i] << endl;
+    }
+}
 
 // Implement a sequential search algorithm
 // your function should search for a target value (target)
 //    within the indices of "start" to "end"
 // return true if target exists in the array within this range,
 //    return false otherwise
-bool seqSearch(string target, string arr[], int start, int end) {
+bool seqSearch(string target, string arr[], int start, int end) 
+{
+    for(int i = start; i <= end; i++)
+    {
+        if(arr[i] == target)return true; 
+    }
     return false;
 }
 
 // Implement an iterative binary search 
 // Return true if target exists in the array with size n,
 //    return false otherwise 
-bool binSearch(float target, float arr[], int n) {
+bool binSearch(float target, float arr[], int n) 
+{
+    
+    int high = n - 1;
+    int low = 0;
+    while(low <= high)
+    {
+        int mid = low + (high - low)/2;
+
+        if(arr[mid] == target)return true;
+
+        if(arr[mid] < target) 
+        {
+            low+=1;
+        }
+        else
+        {
+            high-=1;
+        }
+    }
     return false;	
 }
 
@@ -30,10 +60,23 @@ bool binSearch(float target, float arr[], int n) {
 //   return false otherwise
 bool binSearchR(char target, char charray[], int n) {
     // base case
-
+    if(n <= 0)return false;
     //general case
+    int midPoint = (n - 1)/2;
 
-    return false;
+    if(charray[midPoint] == target)
+    {
+        return true;
+    }
+    else if(charray[midPoint] > target)
+    {
+        return binSearchR(target, charray, midPoint);
+    }
+    else
+    {
+        return binSearchR(target, charray + midPoint + 1, n - midPoint - 1);
+    }
+    
 }
 
 // Implement a brand new sorting algorithm
@@ -57,10 +100,40 @@ Step 3: Finally, use your two functions above to complete the following in newSo
         *** You can make this recursive, if you wish!
 */
 
-void swap(double darray[], ...) {}
-
-int minFind(double darray[], ...) {
-    return -1;
+void swap(double darray[], int x, int y) 
+{
+    double temp = darray[x];
+    darray[x] = darray[y];
+    darray[y] = temp;
 }
 
-void newSort(double darray[], int n) {}
+int minFind(double darray[], int size) 
+{
+    int min = 0;
+
+    for(int i = 0; i < size; i++)
+    {
+        for(int j = i + 1; j < size; j++)
+        {
+            if(darray[j] < darray[min])
+            {
+                min = j;
+            }
+        }
+    }
+    return min;
+
+}
+
+void newSort(double darray[], int n) 
+{
+    if(n <= 0)
+    {
+        return; 
+    }
+
+    int index = minFind(darray, n);
+    swap(darray, 0, index);
+    newSort(darray + 1, n - 1);
+
+}
